@@ -1,0 +1,26 @@
+Use			        Color				        Hex Code
+Primary			    	Slate Gray			        #6B7280
+Accent			    	Muted Teal			        #5EC6B8
+Background		    	Very Light Gray / Off-White		#F9FAFB
+Text			    	Charcoal			        #1F2937
+Highlight		    	Soft Mustard / Sand		   	#F4C06A
+Button Hover / CTA		Darker Teal				#369C91
+Border / Divider		Light Slate				#D1D5DB
+
+
+
+Purpose	            	Color Name	               		Hex Code	        Notes
+Accent (Main)		Soft Rose			        #F2A6B3	    	Feminine but gentle, elegant
+Secondary		Mauve Pink			        #D7A3C4	    	Adds variety to banners or tags
+Background		Misty Blush			        #FDECEE	    	For section backgrounds or cards
+Text Contrast		Deep Plum			        #5D355E	    	Stylish headings, over light pink backgrounds
+
+
+
+Purpose	            Color Name	                Hex Code	        Notes
+Accent (Main)	    Sky Blue	                #A6D4F2	   	 	Light and happy, works for all kids
+Secondary	    Banana Cream	        #FFE9A7	    		Pairs well with blue, playful vibe
+Background	    Pale Mint	                #E5F9EC	    		Fresh feel for product areas
+Highlight Text	    Warm Coral	                #FFAD9E	    		Use for badges like “New”, “Hot”, etc.
+	
+

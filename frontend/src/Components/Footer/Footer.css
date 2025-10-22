@@ -1,0 +1,119 @@
+/* Original CSS */
+.footer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding: 0px 140px;
+    padding-top: 100px;
+    background: #E5F9EC;
+    gap: 30px;
+}
+
+.footer-logo img{
+    width: 200px;
+    height: auto;
+}
+
+.footer-list{
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    list-style: none;
+    font-size: 20px;
+    font-weight: 500;
+    color: #1F2937;
+}
+
+.footer-social-icons{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.footer-list li, .footer-icons-container{
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.footer-list li:hover, .footer-icons-container:hover{
+    transform: scale(1.1);
+    color: #369C91;
+}
+
+.footer-list li:active, .footer-icons-container:active{
+    transform: scale(1);
+    color: #369C91;
+}
+
+.footer-copyright{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-copyright hr{
+    width: 75vw;
+    height: 2px;
+    background-color: #6B7280;
+}
+
+.footer-copyright p{
+    color: #6B7280;
+    padding: 10px;
+}
+
+/* Responsive CSS for max-width: 720px */
+@media (max-width: 720px) {
+    .footer {
+        padding: 60px 20px 40px 20px;
+        gap: 25px;
+    }
+
+    .footer-logo img {
+        width: 150px;
+    }
+
+    .footer-list {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        font-size: 18px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-social-icons {
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .footer-list li:hover, .footer-icons-container:hover {
+        transform: scale(1.05);
+        color: #369C91;
+    }
+
+    .footer-copyright {
+        width: 100%;
+        gap: 15px;
+    }
+
+    .footer-copyright hr {
+        width: 90vw;
+        height: 1px;
+    }
+
+    .footer-copyright p {
+        font-size: 14px;
+        text-align: center;
+        margin: 0;
+        padding: 5px 10px;
+    }
+}
