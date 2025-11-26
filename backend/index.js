@@ -1,29 +1,25 @@
-require("dotenv").config();
-const port = process.env.PORT;
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const multer = require("multer");
-const path = require("path");
-const cors = require("cors");
-const { type } = require("os");
+import express from "express";
+import "dotenv/config";
+import connectDB from "./configs/db.js";
+import multer from "multer";
+import path from "path";
+import cors from "cors";
 
+
+const port = process.env.PORT;
+const app = express();
 app.use(express.json());
 app.use(cors());
+
+await connectDB();
 
 const ProductRoutes = require("./Routes/products");
 const UserRoutes = require("./Routes/user");
 
-//Database Connection with MongoDB
-mongoose.connect(
-  "mongodb+srv://prabhathkulasooriya:Ip123456@cluster0.ldmgbal.mongodb.net/fabrilia"
-);
 
-//API Creation
+app.get("/", (req, res) => {res.send("Backend is running");});
 
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
+
 
 //Image Storage
 const storage = multer.diskStorage({
