@@ -4,6 +4,8 @@ import connectDB from "./configs/db.js";
 import multer from "multer";
 import path from "path";
 import cors from "cors";
+import userRouter from "./Routes/userRoutes.js";
+import productRouter from "./Routes/productRoutes.js";
 
 
 const port = process.env.PORT;
@@ -13,12 +15,7 @@ app.use(cors());
 
 await connectDB();
 
-const ProductRoutes = require("./Routes/products");
-const UserRoutes = require("./Routes/user");
-
-
 app.get("/", (req, res) => {res.send("Backend is running");});
-
 
 
 //Image Storage
@@ -45,10 +42,11 @@ app.post("/upload", upload.single("product"), (req, res) => {
 });
 
 //Product Routes
-app.use("/products", ProductRoutes);
+app.use("/products", productRouter);
 
 //User Routes
-app.use("/user", UserRoutes);
+app.use("/user", userRouter);
+
 
 
 app.listen(port, (error) => {
