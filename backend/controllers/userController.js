@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET,{expiresIn:"7d"});
+const generateToken = (id, role) => {
+    return jwt.sign({ id , role }, process.env.JWT_SECRET,{expiresIn:"3d"});
 }
 
 
@@ -29,11 +29,12 @@ export const signUp = async (req, res) => {
           email: email,
           password: encryptedPassword,
           cartData: cart,
+          role: "user"
         });
 
         await user.save();
 
-        const token = generateToken(user._id);
+        const token = generateToken(user._id , user.role);
 
         return res.status(200).json({success: true, message: "User Registered Successfully!", token: token});
         
@@ -58,7 +59,7 @@ export const logIn = async (req, res)=>{
             return res.status(400).json({success: false, message: "Incorrect Password!"});
         }
 
-        const token = generateToken(user._id);
+        const token = generateToken(user._id , user.role);
         return res.status(200).json({success: true, message: "User Logged In Successfully!", token: token});
 
     }catch(error){

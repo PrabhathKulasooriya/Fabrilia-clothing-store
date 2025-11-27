@@ -12,22 +12,21 @@
 }
 
 .loginsignup-container{
-    min-width: 35vw;
-    height: 600px;
+    min-width: 30vw;
+    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 40px;
-    padding: 0px 100px;
-    background: linear-gradient(180deg, #E5F9EC, #E5F9EC 90%);
+    padding: 0px 50px;
     gap: 30px;
     border: 1px solid #369C91;
     border-radius: 25px;
 }
 
 .loginsignup-container h1{
-    margin: 20px 0px;
+    margin: 10px 0px;
     color: #1F2937;
 }
 
@@ -35,7 +34,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 30px;
+    margin-top: 10px;
     min-width: 20vw ;
 }
 

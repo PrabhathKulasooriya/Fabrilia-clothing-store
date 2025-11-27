@@ -11,6 +11,7 @@ const fetchUser = async (req, res, next) => {
 
     const data = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = data.id;
+    req.userRole = data.role;
     next();
 
   } catch (error) {

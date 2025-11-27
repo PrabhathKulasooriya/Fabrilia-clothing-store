@@ -6,6 +6,8 @@ import path from "path";
 import cors from "cors";
 import userRouter from "./Routes/userRoutes.js";
 import productRouter from "./Routes/productRoutes.js";
+import fetchUser from "./middlewares/fetchUser.js";
+import roleAuthentication from "./middlewares/roleAuthentication.js";
 
 
 const port = process.env.PORT;
@@ -34,7 +36,7 @@ const upload = multer({ storage: storage });
 //Upload endpoint for images
 app.use("/images", express.static("upload/images"));
 
-app.post("/upload", upload.single("product"), (req, res) => {
+app.post("/upload",fetchUser, roleAuthentication("admin"), upload.single("product"), (req, res) => {
   res.json({
     success: 1,
     image_url: `http://localhost:${port}/images/${req.file.filename}`,
