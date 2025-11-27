@@ -35,6 +35,54 @@
     text-align: right;
 }
 
+.nav-profile-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+}
+
+.nav-profile {
+  cursor: pointer;
+}
+
+.nav-logout-icon {
+  height: 28px;
+  width: 28px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  filter: brightness(0); /* Makes it black */
+}
+
+.nav-profile-group:hover .nav-logout-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-profile-group:hover .nav-profile{
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.nav-logout-icon-div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    left: 0;
+}
+
+.nav-child-3{
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 35px;
+}
+
 @media screen and (max-width: 720px) {
     .navbar{
         padding: 15px 20px;

@@ -10,7 +10,7 @@ const generateToken = (id, role) => {
 
 export const signUp = async (req, res) => {
     try {
-        const {name, email, password} = req.body;
+        const {name, email, password, role} = req.body;
 
         let check = await User.findOne({email: email});
         if(check){
@@ -29,14 +29,14 @@ export const signUp = async (req, res) => {
           email: email,
           password: encryptedPassword,
           cartData: cart,
-          role: "user"
+          role: role
         });
 
         await user.save();
 
         const token = generateToken(user._id , user.role);
 
-        return res.status(200).json({success: true, message: "User Registered Successfully!", token: token});
+        return res.status(200).json({success: true, message: "User Registered Successfully!", token: token, role: user.role});
         
     }
     catch(error){
@@ -60,7 +60,7 @@ export const logIn = async (req, res)=>{
         }
 
         const token = generateToken(user._id , user.role);
-        return res.status(200).json({success: true, message: "User Logged In Successfully!", token: token});
+        return res.status(200).json({success: true, message: "User Logged In Successfully!", token: token, role: user.role});
 
     }catch(error){
         res.status(500).json({success: false, message: error.message});

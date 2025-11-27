@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./AddProduct.css";
 import upload_area from "../../../assets/upload_area.svg";
+import { useLoading } from "../../../Contex/LoadingContext";
 
 const AddProduct = () => {
+  const {setLoading} = useLoading();
   const [image, setImage] = useState(false);
   const [productDetails, setProductDetails] = useState({
     name: "",
-    image: "",
     category: "women",
     old_price: "",
     new_price: "",
@@ -20,42 +21,58 @@ const AddProduct = () => {
     setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
   };
 
-  //Send Prodct to Backend
+  //Send Product to Backend
   const addProduct = async () => {
-    console.log(productDetails);
-    let responseData;
-    let product = productDetails;
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
 
     let formData = new FormData();
+
+    // Append the image
     formData.append("product", image);
 
-    await fetch("http://localhost:4000/upload", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        responseData = data;
-      });
+    // Append all product details
+    formData.append("name", productDetails.name);
+    formData.append("category", productDetails.category);
+    formData.append("old_price", productDetails.old_price);
+    formData.append("new_price", productDetails.new_price);
 
-    if (responseData.success) {
-      product.image = responseData.image_url;
-      console.log(product);
-      await fetch("http://localhost:4000/products/addproduct", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify(product),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          data.success ? alert("Product Added") : alert("Error");
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:4000/products/addproduct",
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "auth-token": `${localStorage.getItem("auth-token")}`,
+          },
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        setLoading(false);
+        alert("Product Added");
+        // Reset form
+        setProductDetails({
+          name: "",
+          category: "women",
+          old_price: "",
+          new_price: "",
         });
+        setImage(false);
+      } else {
+        alert("Error: " + (data.message || "Failed to add product"));
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to add product");
     }
   };
 

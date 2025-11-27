@@ -1,0 +1,22 @@
+.container{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid transparent;
+  border-top-color: #7f4cff;
+  border-left-color: #4c2cff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

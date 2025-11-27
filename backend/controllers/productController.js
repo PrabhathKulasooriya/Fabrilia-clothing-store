@@ -1,42 +1,79 @@
 import Product from "../models/Product.js";
 import User from "../models/User.js";
+import { uploadToCloudinary } from "../middlewares/upload.js";
+
+
 
 // API for adding product
 export const addProduct = async (req, res) => {
   try {
+    // Validate that image was uploaded
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        error: "Product image is required",
+      });
+    }
+
+    // Validate required fields
+    if (
+      !req.body.name ||
+      !req.body.category ||
+      !req.body.new_price ||
+      !req.body.old_price
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "All fields are required",
+      });
+    }
+
+    // Upload image to Cloudinary
+    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+    const imageUrl = cloudinaryResult.secure_url;
+
+    // Generate product ID
     let products = await Product.find({});
     let id;
 
     if (products.length > 0) {
-      let last_product_array = products.slice(-1);
-      let last_product = last_product_array[0];
+      let last_product = products[products.length - 1];
       id = last_product.id + 1;
     } else {
       id = 1;
     }
 
+    // Create new product
     const product = new Product({
       id: id,
       name: req.body.name,
-      image: req.body.image,
+      image: imageUrl, // Cloudinary URL
       category: req.body.category,
       new_price: req.body.new_price,
       old_price: req.body.old_price,
     });
 
-    console.log(product);
+    console.log("Saving product:", product);
     await product.save();
-    console.log("Product Saved!");
+    console.log("Product saved successfully!");
 
     res.json({
       success: true,
-      name: req.body.name,
+      message: "Product added successfully",
+      product: {
+        id: product.id,
+        name: product.name,
+        image: imageUrl,
+        category: product.category,
+        new_price: product.new_price,
+        old_price: product.old_price,
+      },
     });
   } catch (error) {
     console.error("Error adding product:", error);
     res.status(500).json({
       success: false,
-      error: error.message,
+      error: error.message || "Failed to add product",
     });
   }
 };
@@ -70,9 +107,26 @@ export const removeProduct = async (req, res) => {
 // API for getting all products
 export const getAllProducts = async (req, res) => {
   try {
-    let products = await Product.find({});
-    console.log("Products Fetched!");
-    res.send(products);
+    
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; 
+    const skip = (page - 1) * limit;
+  
+    const totalProducts = await Product.countDocuments();
+
+    const products = await Product.find({}).skip(skip).limit(limit);
+
+    console.log(`Products Fetched! Page: ${page}`);
+
+    res.status(200).json({
+      success: true,
+      page: page,
+      limit: limit,
+      totalProducts: totalProducts,
+      totalPages: Math.ceil(totalProducts / limit),
+      products: products,
+    });
+    
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({
@@ -80,7 +134,7 @@ export const getAllProducts = async (req, res) => {
       error: error.message,
     });
   }
-};
+};  
 
 // API for new collection data
 export const getNewCollections = async (req, res) => {
