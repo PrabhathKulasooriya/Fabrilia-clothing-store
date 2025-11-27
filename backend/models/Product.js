@@ -34,6 +34,9 @@ const ProductSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  cloudinary_id: { 
+    type: String 
+  },
 });
 
 const Product = mongoose.model("Product", ProductSchema);

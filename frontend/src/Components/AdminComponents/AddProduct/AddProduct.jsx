@@ -39,9 +39,8 @@ const AddProduct = () => {
     formData.append("old_price", productDetails.old_price);
     formData.append("new_price", productDetails.new_price);
 
-    setLoading(true);
-
     try {
+      setLoading(true);
       const response = await fetch(
         "http://localhost:4000/products/addproduct",
         {
@@ -57,7 +56,6 @@ const AddProduct = () => {
       const data = await response.json();
 
       if (data.success) {
-        setLoading(false);
         alert("Product Added");
         // Reset form
         setProductDetails({
@@ -73,6 +71,8 @@ const AddProduct = () => {
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to add product");
+    } finally {
+      setLoading(false);
     }
   };
 

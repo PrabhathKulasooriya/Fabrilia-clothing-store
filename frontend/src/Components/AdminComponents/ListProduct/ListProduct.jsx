@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./ListProduct.css";
 import cross_icon from "../../../assets/cross_icon.png";
+import { useLoading} from "../../../Contex/LoadingContext";
 
 const ListProduct = () => {
+  const {setLoading} = useLoading();
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -30,11 +32,13 @@ const ListProduct = () => {
 
   const removeProduct = async (id) => {
     try {
+      setLoading(true);
       const res = await fetch("http://localhost:4000/products/removeproduct", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          "auth-token": `${localStorage.getItem("auth-token")}`,
         },
         body: JSON.stringify({ id: id }),
       });
@@ -43,7 +47,7 @@ const ListProduct = () => {
 
       if (data.success) {
         alert("Product Removed!");
-        // If current page becomes empty after deletion, go to previous page
+        
         if (products.length === 1 && currentPage > 1) {
           setCurrentPage(currentPage - 1);
           fetchInfo(currentPage - 1);
@@ -56,6 +60,8 @@ const ListProduct = () => {
     } catch (error) {
       console.error("Error removing product:", error);
       alert("Error removing product!");
+    } finally {
+      setLoading(false);
     }
   };
 

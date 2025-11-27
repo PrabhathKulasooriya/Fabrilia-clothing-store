@@ -1,6 +1,7 @@
 import Product from "../models/Product.js";
 import User from "../models/User.js";
 import { uploadToCloudinary } from "../middlewares/upload.js";
+import {cloudinary} from "../middlewares/upload.js";
 
 
 
@@ -31,6 +32,7 @@ export const addProduct = async (req, res) => {
     // Upload image to Cloudinary
     const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
     const imageUrl = cloudinaryResult.secure_url;
+    const cloudinary_id = cloudinaryResult.public_id;
 
     // Generate product ID
     let products = await Product.find({});
@@ -47,7 +49,8 @@ export const addProduct = async (req, res) => {
     const product = new Product({
       id: id,
       name: req.body.name,
-      image: imageUrl, // Cloudinary URL
+      image: imageUrl, 
+      cloudinary_id: cloudinary_id,
       category: req.body.category,
       new_price: req.body.new_price,
       old_price: req.body.old_price,
@@ -64,6 +67,7 @@ export const addProduct = async (req, res) => {
         id: product.id,
         name: product.name,
         image: imageUrl,
+        cloudinary_id: cloudinary_id,
         category: product.category,
         new_price: product.new_price,
         old_price: product.old_price,
@@ -81,19 +85,28 @@ export const addProduct = async (req, res) => {
 // API for delete product
 export const removeProduct = async (req, res) => {
   try {
-    const deletedProduct = await Product.findOneAndDelete({ id: req.body.id });
+    // Find product first (so we can delete image)
+    const product = await Product.findOne({ id: req.body.id });
 
-    if (!deletedProduct) {
+    if (!product) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
 
+    // Delete image from Cloudinary
+    if (product.cloudinary_id) {
+      await cloudinary.uploader.destroy(product.cloudinary_id);
+      console.log("Cloudinary image removed!");
+    }
+
+    await Product.deleteOne({ id: req.body.id });
+
     console.log("Product Removed!");
     res.json({
       success: true,
-      name: req.body.name,
+      message: "Product and image removed successfully!",
     });
   } catch (error) {
     console.error("Error removing product:", error);
