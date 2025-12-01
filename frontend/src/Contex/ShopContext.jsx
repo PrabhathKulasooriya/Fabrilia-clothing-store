@@ -1,7 +1,9 @@
 import React,{ useState, useEffect} from "react";
 
 
+
 export const ShopContext = React.createContext(null);
+
 const getDefaultCart=() =>{
         let cart = {};
         for(let i=0; i<300+1; i++){
@@ -11,13 +13,15 @@ const getDefaultCart=() =>{
      }
 
 const ShopContextProvider = (props)=>{
-
+  
     const [all_product, setAllProduct] = useState([]);
     const [cartItems, setCartItems] = useState(getDefaultCart());
 
     useEffect(()=>{
+      
       fetch("http://localhost:4000/products/allproducts").then((res)=>res.json()).then((data)=>{
-        setAllProduct(data);
+        setAllProduct(data.products);
+        console.log(data.products);
       });
 
       if(localStorage.getItem("auth-token")){
@@ -34,6 +38,7 @@ const ShopContextProvider = (props)=>{
             setCartItems(data);
           });
       }
+
     },[]);
     
     const addToCart =(itemId)=>{

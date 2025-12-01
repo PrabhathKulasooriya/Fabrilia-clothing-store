@@ -121,22 +121,10 @@ export const removeProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
   try {
     
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10; 
-    const skip = (page - 1) * limit;
-  
-    const totalProducts = await Product.countDocuments();
-
-    const products = await Product.find({}).skip(skip).limit(limit);
-
-    console.log(`Products Fetched! Page: ${page}`);
+    let products = await Product.find({});
 
     res.status(200).json({
       success: true,
-      page: page,
-      limit: limit,
-      totalProducts: totalProducts,
-      totalPages: Math.ceil(totalProducts / limit),
       products: products,
     });
     
