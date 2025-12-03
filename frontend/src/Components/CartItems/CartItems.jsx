@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect} from 'react'
 import './CartItems.css'
 import {ShopContext} from '../../Contex/ShopContext'
 import remove_icon from '../../assets/Frontend_Assets/cart_cross_icon.png'
@@ -6,6 +6,19 @@ import remove_icon from '../../assets/Frontend_Assets/cart_cross_icon.png'
 const CartItems = () => {
     
     const {all_product,cartItems, removeFromCart, getTotalCartAmount} = useContext(ShopContext);
+
+    useEffect(() => {console.log("cartItems:", cartItems)},[cartItems]);
+
+    const placeOrder = () =>{
+      const products = all_product.filter((e) => cartItems[e.id] > 0)
+                                  .map((e) => ({
+                                                productId: e.id,
+                                                quantity: cartItems[e.id],
+                                              }));
+      const total = getTotalCartAmount();                                      
+
+        console.log("Products:", products , "total:", total);
+    }
 
   return (
     <div className="cartItems">
@@ -63,7 +76,7 @@ const CartItems = () => {
                         <h3>${getTotalCartAmount()}</h3>
                     </div>
                 </div>
-                <button>Proceed To Checkout</button>
+                <button onClick={()=>placeOrder()}>Proceed To Checkout</button>
             </div>
             <div className="cartitems-promocode">
                 <p>If you have a promo code, Enter it here</p>
